@@ -73,7 +73,7 @@ def main(argv: list[str]) -> int:
 
         checks._cache.clear()
         checks._hermes_config_path = lambda: str(config)
-        checks._hermes_home = lambda: str(home)
+        checks._hermes_home_from_library = lambda: str(home)
         checks._bundled_plugins_dir = lambda: None
 
         result = checks.check_plugins()

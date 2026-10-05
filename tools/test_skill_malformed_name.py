@@ -132,7 +132,7 @@ def main(argv: list[str]) -> int:
             )
 
             checks._cache.clear()
-            checks._hermes_home = lambda: str(home)
+            checks._hermes_home_from_library = lambda: str(home)
             checks._hermes_config_path = lambda: str(home / "config.yaml")
             _write(home / "config.yaml", "model: test\n")
 

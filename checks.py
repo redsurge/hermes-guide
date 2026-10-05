@@ -197,8 +197,35 @@ def _run_hermes(args, timeout=20):
 _cache: dict = {}
 
 
+def _hermes_home_from_library():
+    """Derive $HERMES_HOME from ``hermes_constants`` — no subprocess.
+
+    The plugin runs inside Hermes, so ``hermes_constants`` is importable and
+    ``get_hermes_home()`` returns the same path ``hermes config path`` would.
+    This eliminates the ``config path`` subprocess (~8-25 s) in the common case.
+    Returns None when the import fails (e.g. outside a live Hermes process).
+    """
+    try:
+        from hermes_constants import get_hermes_home
+
+        home = get_hermes_home()
+        if home and os.path.isdir(home):
+            return home
+    except Exception:
+        pass
+    return None
+
+
 def _hermes_config_path():
     if "config_path" not in _cache:
+        # Fast path: construct from library-derived home (no subprocess)
+        home = _hermes_home_from_library()
+        if home:
+            config = os.path.join(home, "config.yaml")
+            if os.path.isfile(config):
+                _cache["config_path"] = config
+                return _cache["config_path"]
+        # Slow path: fall back to `hermes config path` subprocess
         rc, stdout, _ = _run_hermes(["config", "path"], timeout=_CONFIG_PATH_TIMEOUT)
         lines = [ln.strip() for ln in stdout.splitlines() if ln.strip()]
         # Use stdout only (never stderr) — the path is printed to stdout.
@@ -207,7 +234,12 @@ def _hermes_config_path():
 
 
 def _hermes_home():
-    """Resolve $HERMES_HOME as the parent directory of the active config file."""
+    """Resolve $HERMES_HOME, preferring the library (fast) over the CLI (slow)."""
+    # Fast path: derive from hermes_constants (no subprocess)
+    home = _hermes_home_from_library()
+    if home:
+        return home
+    # Slow path: fall back to `hermes config path` subprocess
     path = _hermes_config_path()
     return os.path.dirname(path) if path else None
 

@@ -64,7 +64,7 @@ def main(argv: list[str]) -> int:
         home = Path(td) / "home"
         home.mkdir()
         allowlist = home / "shell-hooks-allowlist.json"
-        checks._hermes_home = lambda: str(home)
+        checks._hermes_home_from_library = lambda: str(home)
 
         doctor_outputs = {
             "no-hooks": (0, "No shell hooks configured — nothing to check.\n", ""),

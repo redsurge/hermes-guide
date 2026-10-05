@@ -77,7 +77,7 @@ def main(argv: list[str]) -> int:
         _build_home(home)
 
         checks._cache.clear()
-        checks._hermes_home = lambda: str(home)
+        checks._hermes_home_from_library = lambda: str(home)
 
         # (1) hidden/archive dirs are skipped
         walked = list(checks._iter_skills())

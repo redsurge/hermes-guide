@@ -58,7 +58,7 @@ def case_version_label(checks):
 
 def case_collision_message(checks):
     """A versionless first owner renders as `unversioned`, not `vunversioned`."""
-    checks._hermes_home = lambda: "/fake/home"
+    checks._hermes_home_from_library = lambda: "/fake/home"
     checks._rel_path = lambda path, base: path  # POSIX-safe on the Windows leg too
     checks._builtin_command_names = lambda: set()
     checks._iter_skills = lambda: [
