@@ -22,6 +22,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 import yaml
 
@@ -178,13 +179,25 @@ def _run_hermes(args, timeout=20):
     not launchable); any other non-zero return is Hermes' own answer and is
     reported as-is, so a real failure is never retried against a different
     install until it looks green.
+
+    *timeout* is a deadline, not a per-attempt budget: the remaining time is
+    divided among the remaining candidates so the total wall-clock never
+    exceeds *timeout*. A candidate that hangs raises TimeoutExpired (not an
+    OSError), so it is NOT in _NOT_EXECUTABLE and does not fall through — the
+    first attempt always gets the full budget, keeping the fallback reachable.
     """
     candidates = _hermes_candidates()
     if not candidates:
         return -127, "", f"{HERMES_EXE}: not found beside this interpreter or on PATH"
+    deadline = time.monotonic() + timeout
     rc, stdout, stderr = -127, "", ""
-    for exe in candidates:
-        rc, stdout, stderr = _run([exe, *args], timeout=timeout)
+    for index, exe in enumerate(candidates):
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            break
+        left = len(candidates) - index
+        attempt = max(1.0, remaining / left)
+        rc, stdout, stderr = _run([exe, *args], timeout=attempt)
         if rc not in _NOT_EXECUTABLE:
             return rc, stdout, stderr
     return rc, stdout, stderr

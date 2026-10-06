@@ -515,6 +515,53 @@ def test_non_file_path_entry_is_ignored():
               not any(os.path.isdir(p) for p in found), f"found={found!r}")
 
 
+def test_timeout_is_deadline_not_per_attempt():
+    """The sum of per-attempt budgets never exceeds the caller's timeout."""
+    timeouts = []
+    clock = [1000.0]
+
+    def _recording_run(cmd, timeout=20):
+        timeouts.append(timeout)
+        clock[0] += timeout  # advance by the attempt duration
+        return 126, "", "cannot exec"
+
+    with mock.patch.object(checks, "_hermes_candidates",
+                          lambda: ["/a/hermes", "/b/hermes", "/c/hermes"]), \
+         mock.patch.object(checks, "_run", _recording_run), \
+         mock.patch.object(checks.time, "monotonic", lambda: clock[0]):
+        checks._run_hermes(["config", "path"], timeout=15)
+
+    total = sum(timeouts)
+    check("timeout is a deadline (sum of attempts <= timeout)",
+          total <= 15.0 and len(timeouts) == 3,
+          f"attempts={timeouts} total={total:.1f}s")
+
+
+def test_timeout_does_not_fall_through():
+    """A candidate that hangs (TimeoutExpired) is not retried elsewhere.
+
+    _run converts TimeoutExpired to -1 (via its generic except Exception
+    branch). -1 is outside _NOT_EXECUTABLE, so _run_hermes returns immediately
+    without trying the second candidate.
+    """
+    attempts = []
+
+    def _hanging_run(cmd, timeout=20):
+        attempts.append(cmd[0])
+        return -1, "", "Command timed out"
+
+    with mock.patch.object(checks, "_hermes_candidates",
+                          lambda: ["/hang/hermes", "/good/hermes"]), \
+         mock.patch.object(checks, "_run", _hanging_run):
+        rc, out, err = checks._run_hermes(["config", "path"], timeout=15)
+
+    check("timeout does not fall through to second candidate",
+          len(attempts) == 1 and attempts[0] == "/hang/hermes",
+          f"attempts={attempts}")
+    check("timeout returns -1 (not a real answer)",
+          rc == -1, f"rc={rc}")
+
+
 def main():
     test_sibling_outranks_path()
     test_falls_through_broken_shim()
@@ -530,6 +577,8 @@ def main():
     test_unset_path_searches_os_defpath()
     test_symlinked_duplicates_collapse_to_one_attempt()
     test_empty_path_component_searches_current_directory()
+    test_timeout_is_deadline_not_per_attempt()
+    test_timeout_does_not_fall_through()
 
     cleanup()
 
