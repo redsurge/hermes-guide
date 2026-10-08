@@ -94,7 +94,7 @@ User env vars: `EDITOR=code --wait`, `HERMES_TUI_THEME=dark`.
 7. **Antivirus flags uv.exe**: false positive; whitelist the `%LOCALAPPDATA%\hermes\bin` folder (hash changes each upgrade). Verify authenticity via `gh attestation verify` (see README).
 8. **Installer BOM**: `iex (irm ...)` strips BOM; `[scriptblock]::Create((irm ...))` does not.
 9. **Config schema drift**: `hermes config set` flags `display.mouse_tracking` and `display.details_mode` as unrecognized - they ARE valid TUI keys (documented); values save and are read anyway. Do not delete them.
-10. **ConPTY mouse/selection loss (Windows Terminal)**: Windows Terminal uses ConPTY, which never delivers DEC mouse sequences. The TUI's AlternateScreen + mouse tracking swallows the wheel and native text selection. PR #97663 defaults `hermes --tui` to inline mode (primary buffer) on native Windows ConPTY — the same fallback Termux uses. Git Bash/MSYS mintty outside WT is unaffected. Workaround until merge: `HERMES_TUI_INLINE=1`. Opt out with `HERMES_TUI_INLINE=0`. WSL2-in-WT is intentionally excluded (WSL reports `platform === 'linux'`, mouse sequences DO reach the Linux PTY).
+10. **ConPTY mouse/selection loss (Windows Terminal)**: Windows Terminal uses ConPTY, which never delivers DEC mouse sequences (confirmed by MSFT maintainer Dustin Howett, microsoft/terminal#376). The TUI's AlternateScreen + mouse tracking swallows the wheel and native text selection. PR #97663 defaults `hermes --tui` to inline mode (primary buffer) on native Windows ConPTY — the same fallback Termux uses. Git Bash/MSYS mintty outside WT is unaffected. Workaround until merge: `HERMES_TUI_INLINE=1`. Opt out with `HERMES_TUI_INLINE=0`. WSL2-in-WT is intentionally excluded (WSL reports `platform === 'linux'`, mouse sequences DO reach the Linux PTY). **Additional risk**: microsoft/terminal#19674 documents console mode corruption when mouse tracking + `SetConsoleMode` are combined — a defensive `SetConsoleMode` refresh may be needed even in inline mode.
 
 ## 5. Known upstream issues (check state before re-reporting)
 
@@ -116,7 +116,7 @@ States verified 2026-10-08. `closed` means fixed upstream — if you still see i
 | #126970 | #126992 | open (PR) | CLI clarify panels stay ~67 columns wide — fix: derive panel width from live terminal width |
 | #67151 | #128225 | open (PR) | Unicode glyphs render as tofu on conhost/Consolas — fix: degrade glyphs safely on legacy Windows console |
 | #85278 | — | open | Windows same-surface guard weak + pid_alive blast radius + voice auto-restart bypasses throttle (partially stale; claim 3 still valid) |
-| #86204 | — | open | Orphan CLI python.exe children not reaped on Windows — needs fresh repro |
+| #86204 | — | open | Orphan CLI python.exe children not reaped on Windows — **solution identified**: Job Objects with `KILL_ON_JOB_CLOSE` (automatic crash-safe tree cleanup) |
 | #93999 | — | open | KawaiiSpinner floods terminal when message exceeds terminal width |
 | #129029 | #129052 | open (PR) | CLI input unresponsive after focus loss (macOS) |
 | #129418 | #129422 | open (PR) | CLI importing resets TERMINAL_DOCKER_VOLUMES from .env |
