@@ -94,22 +94,33 @@ User env vars: `EDITOR=code --wait`, `HERMES_TUI_THEME=dark`.
 7. **Antivirus flags uv.exe**: false positive; whitelist the `%LOCALAPPDATA%\hermes\bin` folder (hash changes each upgrade). Verify authenticity via `gh attestation verify` (see README).
 8. **Installer BOM**: `iex (irm ...)` strips BOM; `[scriptblock]::Create((irm ...))` does not.
 9. **Config schema drift**: `hermes config set` flags `display.mouse_tracking` and `display.details_mode` as unrecognized - they ARE valid TUI keys (documented); values save and are read anyway. Do not delete them.
+10. **ConPTY mouse/selection loss (Windows Terminal)**: Windows Terminal uses ConPTY, which never delivers DEC mouse sequences (confirmed by MSFT maintainer Dustin Howett, microsoft/terminal#376). The TUI's AlternateScreen + mouse tracking swallows the wheel and native text selection. PR #97663 defaults `hermes --tui` to inline mode (primary buffer) on native Windows ConPTY — the same fallback Termux uses. Git Bash/MSYS mintty outside WT is unaffected. Workaround until merge: `HERMES_TUI_INLINE=1`. Opt out with `HERMES_TUI_INLINE=0`. WSL2-in-WT is intentionally excluded (WSL reports `platform === 'linux'`, mouse sequences DO reach the Linux PTY). **Additional risk**: microsoft/terminal#19674 documents console mode corruption when mouse tracking + `SetConsoleMode` are combined — a defensive `SetConsoleMode` refresh may be needed even in inline mode.
 
 ## 5. Known upstream issues (check state before re-reporting)
 
-States verified 2026-09-14. `closed` means fixed upstream — if you still see it, your install or config is behind, not the bug.
+States verified 2026-10-08. `closed` means fixed upstream — if you still see it, your install or config is behind, not the bug. PR-linked issues are one review/merge away from resolution.
 
-| Issue | State | Topic |
-|---|---|---|
-| #25418 | closed | Terminal resize corrupts TUI layout (Ghostty, iTerm2, ...) |
-| #19216 | closed | TUI: resize causes infinite scroll/render loop (flicker, duplicated status bar) |
-| #12130 | open | TUI v2 feature-parity gaps vs the classic CLI (overlays, slash commands, @ refs) |
-| #53301 | open | TUI pet colors washed out on WSL/Windows Terminal — **cause is chalk falling back to 256-color when `COLORTERM` is unset** (not a Kitty-graphics issue; fix the env, e.g. `COLORTERM=truecolor`) |
-| #37637 | closed | `/usage` silent in CLI/TUI (worked via Telegram) |
-| #19214 | closed | `terminal.cwd` is a foot-gun: CLI/TUI should use the launch directory |
-| #14638 | closed | Windows: exit 126 with empty output on every command (Git Bash backend) |
-| #20782 | closed | Windows: `terminal` / `write_file` tools fail (exit 126 / empty file) |
-| #83938 | open | `test_profiles.py` failures on Windows with a non-UTF-8 codepage |
+| Issue | PR | State | Topic |
+|---|---|---|---|
+| #25418 | — | closed | Terminal resize corrupts TUI layout (Ghostty, iTerm2, ...) |
+| #19216 | — | closed | TUI: resize causes infinite scroll/render loop (flicker, duplicated status bar) |
+| #12130 | — | open | TUI v2 feature-parity gaps vs the classic CLI (overlays, slash commands, @ refs) |
+| #53301 | — | open | TUI pet colors washed out on WSL/Windows Terminal — **cause is chalk falling back to 256-color when `COLORTERM` is unset** (not a Kitty-graphics issue; fix the env, e.g. `COLORTERM=truecolor`) |
+| #37637 | — | closed | `/usage` silent in CLI/TUI (worked via Telegram) |
+| #19214 | — | closed | `terminal.cwd` is a foot-gun: CLI/TUI should use the launch directory |
+| #14638 | — | closed | Windows: exit 126 with empty output on every command (Git Bash backend) |
+| #20782 | — | closed | Windows: `terminal` / `write_file` tools fail (exit 126 / empty file) |
+| #83938 | — | open | `test_profiles.py` failures on Windows with a non-UTF-8 codepage |
+| #86571 | #97663 | open (PR) | TUI mouse wheel + selection fail under Windows Terminal/ConPTY — fix: default inline mode on native Windows ConPTY |
+| #96372 | #96410 | open (PR) | TUI chat history clears on terminal resize — fix: stable row keys independent of `cols` |
+| #126970 | #126992 | open (PR) | CLI clarify panels stay ~67 columns wide — fix: derive panel width from live terminal width |
+| #67151 | #128225 | open (PR) | Unicode glyphs render as tofu on conhost/Consolas — fix: degrade glyphs safely on legacy Windows console |
+| #85278 | — | open | Windows same-surface guard weak + pid_alive blast radius + voice auto-restart bypasses throttle (partially stale; claim 3 still valid) |
+| #86204 | — | open | Orphan CLI python.exe children not reaped on Windows — **solution identified**: Job Objects with `KILL_ON_JOB_CLOSE` (automatic crash-safe tree cleanup) |
+| #93999 | — | open | KawaiiSpinner floods terminal when message exceeds terminal width |
+| #129029 | #129052 | open (PR) | CLI input unresponsive after focus loss (macOS) |
+| #129418 | #129422 | open (PR) | CLI importing resets TERMINAL_DOCKER_VOLUMES from .env |
+| #134831 | — | open | CLI oneshot hangs in Honcho shutdown thread join |
 
 ## 5b. Temporary workaround vs permanent fix
 
@@ -171,4 +182,4 @@ Run `/indicator ascii` in the TUI for an immediate fix, then persist by adding `
 
 ---
 
-*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9` (skin_engine.py, config_defaults.py, stdio.py, gateway.py, tui_gateway/server.py, ui-tui/src/theme.ts), upstream docs (installation.md), the issue tracker (nine citations, states noted), and the live Windows 10 desktop install (v0.21.1, `.venv`, Windows Terminal 1.24.11911); re-checked 2026-09-21 that every file/symbol citation still resolves at that revision; Node resolution re-checked 2026-09-29 at `5000e2993` (TUI node resolves through PM; `pm/lock.json` pins Node 26.7.0). Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9` (skin_engine.py, config_defaults.py, stdio.py, gateway.py, tui_gateway/server.py, ui-tui/src/theme.ts, ui-tui/src/app/useMainApp.ts, hermes_cli/cli_tui_mixin.py, hermes_cli/update_cmd.py, hermes_cli/doctor_platform.py, hermes_cli/active_sessions.py, hermes_cli/cli_voice_mixin.py), upstream docs (installation.md), the issue tracker (18 citations, states noted), and the live Windows 10 desktop install (v0.21.1, `.venv`, Windows Terminal 1.24.12741); Node resolution re-checked 2026-09-29 at `5000e2993` (TUI node resolves through PM; `pm/lock.json` pins Node 26.7.0). Re-verify before reuse.*
