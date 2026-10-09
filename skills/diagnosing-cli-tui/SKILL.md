@@ -1,7 +1,7 @@
-﻿---
+---
 name: diagnosing-cli-tui
 description: "Diagnose and fix Hermes Agent CLI/TUI issues on native Windows (PowerShell/conhost, Git Bash backend): rendering artifacts, themes/skins, busy indicators, mouse modes, encoding, and launch/resume."
-version: 1.1.7
+version: 1.1.8
 metadata:
   hermes:
     tags: [hermes, tui, cli, windows, themes, troubleshooting, diagnosing]
@@ -159,6 +159,27 @@ Deep-dive reference: the original investigation with screenshot forensics,
 redundancy analysis, and full source evidence lives at
 `references/hermes-cli-tui-windows-investigation.md` in this skill's directory.
 
+## Report
+
+This skill diagnoses CLI/TUI issues on native Windows — rendering artifacts, themes/skins, busy indicators, mouse modes, encoding, and launch/resume. When you run the diagnostic workflow, present findings in the standard format below.
+
+### Summary
+Your TUI shows unreadable tofu faces for the busy indicator because conhost has no font fallback for the default kaomoji style. Switching to ASCII indicator style fixes the readability.
+
+### Findings
+| Severity | What | Evidence |
+|---|---|---|
+| MEDIUM | Default kaomoji busy indicator renders as tofu on conhost | Screenshot shows `□□□` instead of animated faces; conhost has no font fallback |
+| LOW | Washed-out colors on Windows Terminal | `COLORTERM` is unset; chalk falls back to 256-color (issue #53301) |
+
+### Recommended Fix
+Run `/indicator ascii` in the TUI for an immediate fix, then persist by adding `display.tui_status_indicator: ascii` to `config.yaml`. For the color issue, set `COLORTERM=truecolor` in your environment.
+
+### References
+- `$HERMES_HOME/config.yaml` — the `display:` block
+- `hermes_cli/skin_engine.py` — skin loading logic
+- `hermes_cli/stdio.py` — `configure_windows_stdio()` UTF-8 handling
+
 ---
 
-*Facts re-verified 2026-10-08 against upstream source at commit `f97608f178d1ffeca59860195ab7da295f7c8e5f` (skin_engine.py, config_defaults.py, stdio.py, gateway.py, tui_gateway/server.py, ui-tui/src/theme.ts, ui-tui/src/app/useMainApp.ts, hermes_cli/cli_tui_mixin.py, hermes_cli/update_cmd.py, hermes_cli/doctor_platform.py, hermes_cli/active_sessions.py, hermes_cli/cli_voice_mixin.py), upstream docs (installation.md), the issue tracker (18 citations, states noted), and the live Windows 10 desktop install (v0.21.1, `.venv`, Windows Terminal 1.24.12741); Node resolution re-checked 2026-09-29 at `5000e2993` (TUI node resolves through PM; `pm/lock.json` pins Node 26.7.0). Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9` (skin_engine.py, config_defaults.py, stdio.py, gateway.py, tui_gateway/server.py, ui-tui/src/theme.ts, ui-tui/src/app/useMainApp.ts, hermes_cli/cli_tui_mixin.py, hermes_cli/update_cmd.py, hermes_cli/doctor_platform.py, hermes_cli/active_sessions.py, hermes_cli/cli_voice_mixin.py), upstream docs (installation.md), the issue tracker (18 citations, states noted), and the live Windows 10 desktop install (v0.21.1, `.venv`, Windows Terminal 1.24.12741); Node resolution re-checked 2026-09-29 at `5000e2993` (TUI node resolves through PM; `pm/lock.json` pins Node 26.7.0). Re-verify before reuse.*
