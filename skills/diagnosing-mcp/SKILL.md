@@ -1,7 +1,7 @@
 ---
 name: diagnosing-mcp
 description: Diagnose Hermes MCP servers that will not connect, expose no tools, fail OAuth, or ignore config — with the exact config.yaml fields and hermes mcp commands to fix each.
-version: 1.1.4
+version: 1.1.5
 metadata:
   hermes:
     tags: [hermes, mcp, troubleshooting]
@@ -80,4 +80,4 @@ Edit `$HERMES_HOME/config.yaml` and change the server's `command` to an absolute
 
 ---
 
-*Facts re-verified 2026-09-14 (corrective pass) against upstream source at commit `46a0daee58abbc1b07f84f505a5ba90f1958295c`: `mcp__<server>__<tool>` naming and the per-server `mcp-<server>` toolset alias (`tools/mcp_tool_schema.py`, `tools/mcp_tool_registration.py`); the server field set and defaults (`tools/mcp_tool_common.py`, `tools/mcp_tool_discovery.py`, `hermes_cli/mcp_config.py`); `include`-wins filtering with fnmatch and the empty-list semantics (`tools/mcp_tool_registration.py`); recycling fields (`tools/mcp_tool.py`); `redirect_uri` (`tools/mcp_oauth.py`); the `install`/`configure`/`login` subcommands. Four previously asserted specifics could **not** be confirmed at current main and are now marked version-dependent instead of quoted as fact: the 30s reload window, `oauth.redirect_host`, the `elicitation` default, and the exact `connect_timeout` value. Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at the declared baseline `f97608f178d1ffeca59860195ab7da295f7c8e5f`: `mcp__<server>__<tool>` naming and the per-server `mcp-<server>` toolset alias (`tools/mcp_tool_schema.py`, `tools/mcp_tool_registration.py`); the server field set and defaults (`tools/mcp_tool_common.py`, `tools/mcp_tool_discovery.py`, `hermes_cli/mcp_config.py`); `include`-wins filtering with fnmatch and the empty-list semantics (`tools/mcp_tool_registration.py`); recycling fields (`tools/mcp_tool.py`); `redirect_uri` (`tools/mcp_oauth.py`); the `install`/`configure`/`login` subcommands. Four previously asserted specifics could **not** be confirmed at current main and are now marked version-dependent instead of quoted as fact: the 30s reload window, `oauth.redirect_host`, the `elicitation` default, and the exact `connect_timeout` value. Re-verify before reuse.*
