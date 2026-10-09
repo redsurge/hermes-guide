@@ -1,7 +1,7 @@
 ---
 name: diagnosing-memory
 description: "Diagnose Hermes memory problems — the agent forgot something, an external memory provider configured but silently unavailable, missing provider plugins or API keys, and built-in MEMORY.md/USER.md errors from config or char limits."
-version: 1.2.5
+version: 1.2.6
 metadata:
   hermes:
     tags: [hermes, memory, providers, troubleshooting, diagnosing]
@@ -212,7 +212,7 @@ Your external memory provider (honcho) is not available because the API key is m
 | MEDIUM | External memory disabled for session | Log at session start: `honcho unavailable; external memory disabled for this session` |
 
 ### Recommended Fix
-Add `HONCHO_API_KEY=<your-key>` to `$HERMES_HOME/.env`, then restart the session. Verify with `hermes memory status` — the provider should show `Status: available ✓`. If the provider plugin is also missing, run `hermes memory setup honcho` first.
+Add `HONCHO_API_KEY=*** to `$HERMES_HOME/.env`, then restart the session. Verify with `hermes memory status` — the provider should show `Status: available ✓`. If the provider plugin is also missing, run `hermes memory setup honcho` first.
 
 ### References
 - `$HERMES_HOME/.env` — the missing API key
@@ -222,4 +222,4 @@ Add `HONCHO_API_KEY=<your-key>` to `$HERMES_HOME/.env`, then restart the session
 
 ---
 
-*Facts re-verified 2026-09-14 against upstream source at commit `46a0daee58abbc1b07f84f505a5ba90f1958295c`: `tools/memory_tool_store.py` (limits + rejection text), `hermes_cli/config_defaults.py` (the `memory:` block and its provider comment), `agent/memory_provider.py` (plugin path), `agent/system_prompt.py` (the external-provider gate), `hermes_cli/mem_trim.py` (`context.memory_trim`), `hermes_cli/subcommands/journey.py` (`memory-graph` alias), plus `optional-skills/autonomous-ai-agents/honcho/` for the provider-list note; provider comment re-verified 2026-09-29 at `5000e2993` (`hindsight` is now catalog-installed). Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `50035ef63c5536757e63bc1c1ffe4e5c19ac7fad`: `tools/memory_tool_store.py` (limits + rejection text), `hermes_cli/config_defaults.py` (the `memory:` block and its provider comment), `agent/memory_provider.py` (plugin path), `agent/system_prompt.py` (the external-provider gate), `hermes_cli/mem_trim.py` (`context.memory_trim`), `hermes_cli/subcommands/journey.py` (`memory-graph` alias), plus `optional-skills/autonomous-ai-agents/honcho/` for the provider-list note; provider comment re-verified 2026-09-29 at `5000e2993` (`hindsight` is now catalog-installed). Re-verify before reuse.*
