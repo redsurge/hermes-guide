@@ -1,7 +1,7 @@
 ---
 name: diagnosing-commands
 description: Diagnose missing or overridden Hermes slash commands — skills as commands, skill bundles, plugin-registered commands, and per-platform admin/user permissions.
-version: 1.1.4
+version: 1.1.5
 metadata:
   hermes:
     tags: [hermes, commands, troubleshooting]
@@ -10,7 +10,7 @@ metadata:
 
 # Diagnosing Slash Commands
 
-Hermes has **no standalone custom-command files** (no `commands/*.md` directory like Claude Code). Every `/command` comes from exactly four sources, dispatched through one central registry (`hermes_cli/commands.py`) on two surfaces: the interactive CLI/TUI and the messaging gateway. Diagnose by identifying which source the command should come from.
+Hermes has **no standalone custom command files** (no `commands/*.md` directory like Claude Code). Every `/command` comes from exactly four sources, dispatched through one central registry (`hermes_cli/commands.py`) on two surfaces: the interactive CLI/TUI and the messaging gateway. Diagnose by identifying which source the command should come from.
 
 > **Disambiguation**: if the skill itself is missing from the index (not just its `/command`), see `diagnosing-skills` — that is a skill-discovery problem, not a command-surface problem.
 
@@ -65,4 +65,4 @@ Add `/my-skill` to `user_allowed_commands` in the Telegram platform's `extra:` b
 
 ---
 
-*Facts re-verified 2026-09-14 against upstream source at commit `46a0daee58abbc1b07f84f505a5ba90f1958295c`: no standalone command files (no `commands/` tree); bundle path `<HERMES_HOME>/skill-bundles/` and bundle-over-skill precedence (`agent/skill_bundles.py`); the stacking cap `_MAX_STACKED_SKILLS = 5` (`agent/skill_commands.py`); `ctx.register_command(name, handler, description=..., args_hint=...)` (`plugins/context_engine/__init__.py`); all four platform gating keys (`gateway/config_loader.py`); alias pairs `new`←`reset` and `context`←`ctx` (`hermes_cli/commands.py`). No claim required correction in this pass — comments were added so each load-bearing fact is traceable. Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9`: no standalone command files (no `commands/` tree); bundle path `<HERMES_HOME>/skill-bundles/` and bundle-over-skill precedence (`agent/skill_bundles.py`); the stacking cap `_MAX_STACKED_SKILLS = 5` (`agent/skill_commands.py`); `ctx.register_command(name, handler, description=..., args_hint=...)` (`plugins/context_engine/__init__.py`); all four platform gating keys (`gateway/config_loader.py`); alias pairs `new`←`reset` and `context`←`ctx` (`hermes_cli/commands.py`). No claim required correction in this pass — comments were added so each load-bearing fact is traceable. Re-verify before reuse.*

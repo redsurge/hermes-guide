@@ -1,7 +1,7 @@
 ---
 name: diagnosing-plugins
 description: Diagnose Hermes plugins that do not load or run — the plugins.enabled opt-in gate, capability consent, discovery locations, and provider sub-categories.
-version: 1.2.3
+version: 1.2.4
 metadata:
   hermes:
     tags: [hermes, plugins, troubleshooting]
@@ -86,4 +86,4 @@ Run `hermes plugins enable my-plugin`, then restart the session. Verify with `he
 
 ---
 
-*Facts re-verified 2026-09-28 against upstream source at commit `46a0daee58abbc1b07f84f505a5ba90f1958295c` (corrective pass): entry-point group `hermes_agent.plugins` and the project-plugins gate `HERMES_ENABLE_PROJECT_PLUGINS` (`plugins/memory/__init__.py`, `hermes_cli/plugin_dev.py`); the capability set and fail-closed behaviour (`hermes_cli/plugins.py::has_capability`, `plugin_capability_granted`); `plugins.enabled` handling (`hermes_cli/plugins.py`); the sub-category directory list (`plugins/`, narrowed in the corrective pass — bundled Kanban is gated by `plugins.enabled`, per `hermes_cli/plugins_discovery.py`); selection keys `context.engine` (`hermes_cli/web_server_config.py`) and `image_gen.provider` (`agent/image_gen_*.py`). One claim was corrected (the nonexistent `llm.model_override` id). Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9` (corrective pass): entry-point group `hermes_agent.plugins` and the project-plugins gate `HERMES_ENABLE_PROJECT_PLUGINS` (`plugins/memory/__init__.py`, `hermes_cli/plugin_dev.py`); the capability set and fail-closed behaviour (`hermes_cli/plugins.py::has_capability`, `plugin_capability_granted`); `plugins.enabled` handling (`hermes_cli/plugins.py`); the sub-category directory list (`plugins/`, narrowed in the corrective pass — bundled Kanban is gated by `plugins.enabled`, per `hermes_cli/plugins_discovery.py`); selection keys `context.engine` (`hermes_cli/web_server_config.py`) and `image_gen.provider` (`agent/image_gen_*.py`). One claim was corrected (the nonexistent `llm.model_override` id). Re-verify before reuse.*

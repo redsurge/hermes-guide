@@ -1,7 +1,7 @@
 ---
 name: diagnosing-skills
 description: Diagnose Hermes skills that are not discovered, not loading, shadowed, hidden by platform or toolset conditions, or stuck as user-modified after edits.
-version: 1.1.5
+version: 1.1.6
 metadata:
   hermes:
     tags: [hermes, skills, troubleshooting]
@@ -100,4 +100,4 @@ Edit the local copy at `$HERMES_HOME/skills/<category>/<name>/SKILL.md` directly
 
 ---
 
-*Facts re-verified 2026-09-14 against upstream source at commit `46a0daee58abbc1b07f84f505a5ba90f1958295c`: all eight hub source names (`tools/skills_hub_*.py`), `_CONDITION_KEYS` and `ESSENTIAL_SKILLS` (`agent/skill_utils.py`), external-dir ownership (`agent/prompt_builder.py`), `skills/.hub/lock.json` (`tools/skills_hub.py`), the bundled marker and `skills opt-in --sync` / `skills reset --restore` paths (`hermes_cli/`), `required_environment_variables` (`tools/skills_tool.py`), the skills-scoped `write_approval` and `$HERMES_HOME/pending/skills/`, and `plugin:skill` qualified dispatch (`tools/skills_tool.py`). Creation flows table and duplicates & consolidation section added 2026-10-06, verified against upstream `skills/software-development/hermes-agent-skill-authoring/SKILL.md` (v2.0.0) at pinned baseline `5000e29936df69d5209f7cf2eea8e5776cb4cbb1`. Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9`: all eight hub source names (`tools/skills_hub_*.py`), `_CONDITION_KEYS` and `ESSENTIAL_SKILLS` (`agent/skill_utils.py`), external-dir ownership (`agent/prompt_builder.py`), `skills/.hub/lock.json` (`tools/skills_hub.py`), the bundled marker and `skills opt-in --sync` / `skills reset --restore` paths (`hermes_cli/`), `required_environment_variables` (`tools/skills_tool.py`), the skills-scoped `write_approval` and `$HERMES_HOME/pending/skills/`, and `plugin:skill` qualified dispatch (`tools/skills_tool.py`). Creation flows table and duplicates & consolidation section added 2026-10-06, verified against upstream `skills/software-development/hermes-agent-skill-authoring/SKILL.md` (v2.0.0) at pinned baseline `5000e29936df69d5209f7cf2eea8e5776cb4cbb1`. Re-verify before reuse.*
