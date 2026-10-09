@@ -28,7 +28,7 @@ tree, so there is no number in this file to keep in sync.
 ## Reporting issues
 
 If a skill gives inaccurate guidance for a specific Hermes version, or misses a
-known pitfall, [open an issue](https://github.com/iap/hermes-guide/issues). There
+known pitfall, [open an issue](https://github.com/redsurge/hermes-guide/issues). There
 are two templates — `bug-report.yml` for anything broken in the plugin, checks or
 docs, and `skill-drift.yml` for a fact that no longer matches Hermes — and blank
 issues are disabled. The `skill-drift.yml` dropdown carries one option per shipped
@@ -132,10 +132,10 @@ comments, source, and documentation.
 
 - **Short and direct.** Lead with the result.
 - **No cheerful filler.** "Thanks @user", not `Thanks so much @user!`. No
-  `great question`, `hope this helps`, or apologies for things that were not your
-  fault.
-- **Technical prose only.** No enthusiasm, no reassurance, no restatement of the
-  request before answering it.
+  `great question`, `hope this helps`, or apologies for things that were not
+  your fault.
+- **Technical prose only.** No enthusiasm, no reassurance, no restatement of
+  the request before answering it.
 - **No emoji** in prose, commit messages, PR or issue bodies, or source.
 
 Three carve-outs, because each of these quotes rather than decorates:
@@ -264,8 +264,8 @@ version, your platform (native Windows or POSIX), and the output of
    [AGENTS.md](AGENTS.md) for the full list and what CI adds on top.
 4. Fill in the PR template — **Environment** and **Validation Results** are read
    by workflows, not just by reviewers. The validation table is machine-checked:
-   `validate-claim.yml` re-runs the hermetic gates against your head and fails the
-   check if your table does not match reality.
+   `validate-claim.yml` re-runs the hermetic gates against your head and fails
+   the check if your table does not match reality.
 5. Report anything you could not run as `not run` rather than omitting the row.
    An honest gap is accepted; an unsupported claim is not.
 
