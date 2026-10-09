@@ -1,7 +1,7 @@
-﻿---
+---
 name: diagnosing-path
 description: "Diagnose Hermes Agent path issues — the dual-venv layout (.venv/venv), how to detect which venv is active, the canonical resolution order, and best practices for code, scripts, and documentation that reference paths."
-version: 1.5.4
+version: 1.5.5
 metadata:
   hermes:
     tags: [hermes, path, venv, python, troubleshooting, guide]
@@ -48,7 +48,7 @@ def is_venv():
     )
 
 def active_venv_path():
-    """Return the path to the active venv, or None if not in a venv."""
+    """Return path to the active venv, or None if not in a venv."""
     if not is_venv():
         return None
     return sys.prefix
@@ -227,10 +227,7 @@ if venv:
     python_path = venv_bin_dir(venv) / "python"
     # POSIX: /path/to/hermes-agent/venv/bin/python    (pre-pm installer layout)
     #         /path/to/hermes-agent/.venv/bin/python  (uv layout, when venv/ absent)
-    # Windows: C:\path\to\hermes-agent\venv\Scripts\python.exe
-```
-
-Upstream's helpers take a `windows=` keyword (`venv_bin_dir(venv_dir, *, windows=None)`, `venv_python_path(venv_dir, *, windows=None)`) so Windows paths can be exercised on any host — and they return a path **unconditionally**: a missing venv is the caller's decision, not the helper's. If `venv_bin_dir` is not available (outside Hermes core), replicate the logic:
+    # Windows: C:\path\to\hermes-agent\venv\Scripts\python.exe\n```\n\nUpstream's helpers take a `windows=` keyword (`venv_bin_dir(venv_dir, *, windows=None)`, `venv_python_path(venv_dir, *, windows=None)`) so Windows paths can be exercised on any host — and they return a path **unconditionally**: a missing venv is the caller's decision, not the helper's. If `venv_bin_dir` is not available (outside Hermes core), replicate the logic:
 
 ```python
 from pathlib import Path

@@ -1,7 +1,7 @@
-﻿---
+---
 name: installing-hermes
 description: Install, reinstall, upgrade, and uninstall Hermes Agent on Linux/WSL2 (NixOS included) — the four install routes, what each creates on disk, config bootstrap, and the gotchas that bite.
-version: 1.0.6
+version: 1.0.7
 metadata:
   hermes:
     tags: [hermes, installation, wsl2, nixos, upgrade]
@@ -158,4 +158,4 @@ Re-run the installer to rebuild the PM dependency environment: `curl -fsSL https
 
 ---
 
-*Facts re-verified 2026-09-21 against upstream source at commit `cedf4a3d78675283fa93e4e6ea2d6212bf414667`: `scripts/install.sh` (the four-route layout, `$HERMES_HOME` as data — re-install/upgrade preserves `config.yaml`/memories/sessions; `HERMES_HOME` default resolution; the piped one-liner the two-step mirrors; `xz` prerequisite — .tar.xz extraction requires it, #11197; `PYTHON_VERSION="3.11"`; `NODE_VERSION="26"` — corrected this pass: the skill previously said Node.js v22, the installer pins 26 with 22.22+/24.11+/26+ supported; managed uv into `$HERMES_HOME/bin`; git auto-provision attempt) and `scripts/install.ps1` (the native-Windows route); both describe the pre-pm installer. Re-checked 2026-09-29 at `5000e2993`: `PYTHON_VERSION`/`NODE_VERSION` no longer exist in `install.sh`; it stages pinned `uv` into the store slot (`${HERMES_RUNTIME_DIR:-$HERMES_HOME/tools}/uv-<version>-<target>/`, sha256-verified), bootstraps a tool-only Python, then `pm.cli install` owns the exact runtime pin — Python **3.14.7**, Node **26.7.0**, ripgrep **15.2.0**, ffmpeg **9.0.1**; PM-era layout (no in-tree venv — a legacy one is removed once a generation is committed; shims bind the store Python) and the pre-pm npm workspace step retired (`source_build_env` sets `CI=1`). Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9`: `scripts/install.sh` (the four-route layout, `$HERMES_HOME` as data — re-install/upgrade preserves `config.yaml`/memories/sessions; `HERMES_HOME` default resolution; the piped one-liner the two-step mirrors; `xz` prerequisite — .tar.xz extraction requires it, #11197; `PYTHON_VERSION="3.11"`; `NODE_VERSION="26"` — corrected this pass: the skill previously said Node.js v22, the installer pins 26 with 22.22+/24.11+/26+ supported; managed uv into `$HERMES_HOME/bin`; git auto-provision attempt) and `scripts/install.ps1` (the native-Windows route); both describe the pre-pm installer. Re-checked 2026-09-29 at `5000e2993`: `PYTHON_VERSION`/`NODE_VERSION` no longer exist in `install.sh`; it stages pinned `uv` into the store slot (`${HERMES_RUNTIME_DIR:-$HERMES_HOME/tools}/uv-<version>-<target>/`, sha256-verified), bootstraps a tool-only Python, then `pm.cli install` owns the exact runtime pin — Python **3.14.7**, Node **26.7.0**, ripgrep **15.2.0**, ffmpeg **9.0.1**; PM-era layout (no in-tree venv — a legacy one is removed once a generation is committed; shims bind the store Python) and the pre-pm npm workspace step retired (`source_build_env` sets `CI=1`). Re-verify before reuse.*

@@ -1,7 +1,7 @@
 ---
 name: diagnosing-providers
 description: Diagnose model provider issues — custom endpoints flooding the picker with hundreds of models, discover_models misbehaving, persisted catalogs bloating config, and provider/auth failures.
-version: 1.1.8
+version: 1.1.9
 metadata:
   hermes:
     tags: [hermes, configuration, troubleshooting]
@@ -44,7 +44,7 @@ There is no "top N", no "most-used", no auto-narrowing. The switch is binary.
 
 ## Step 2 — The catalog-bloat trap
 
-Hermes persists a discovered catalog under `models:` as a **dict** with `models_discovered: true`. This is **metadata, not a pin** — `model_switch.py:_models_config_is_allowlist` treats a discovered catalog as never-a-pin. It does nothing but bloat `config.yaml`.
+Hermes persists a discovered catalog under `models:` as a **dict** with `models_discovered: true`. This is **metadata, not a pin** — `model_switch.py::_models_config_is_allowlist` treats a discovered catalog as never-a-pin. It does nothing but bloat `config.yaml`.
 
 A persisted catalog is a copy of the last `/v1/models` response. It is not consulted at runtime; the endpoint is re-probed at every picker build. It drifts from the endpoint and must be hand-maintained if treated as authoritative.
 
@@ -54,7 +54,7 @@ A persisted catalog is a copy of the last `/v1/models` response. It is not consu
 
 ## Step 2.5 — Distinguish config bloat from endpoint reality
 
-Before editing anything, confirm the endpoint actually returns that many models. A persisted catalog is a snapshot; the live endpoint may differ. Probe the endpoint's `/models` route with your API key in the `Authorization: Bearer …` header (same request any OpenAI-compatible client sends) and count the entries in the `data` array — print only the count, never the key or the full response.
+Before editing anything, confirm the endpoint actually returns that many models. A persisted catalog is a snapshot; the endpoint may differ. Probe the endpoint's `/models` route with your API key in the `Authorization: Bearer …` header (same request any OpenAI-compatible client sends) and count the entries in the `data` array — print only the count, never the key or the full response.
 
 If the live count matches the persisted count, the catalog is current and the bloat is real. If it is much smaller, the persisted catalog is stale — removing it loses nothing.
 
@@ -156,4 +156,4 @@ Remove the `models:` dict and `models_discovered:` flag from the provider entry 
 
 ---
 
-*Facts re-verified 2026-09-21 against upstream source at commit `cedf4a3d78675283fa93e4e6ea2d6212bf414667`: `hermes_cli/model_switch_providers.py::_entry_credentials` (key_cmd resolved first and returned early; `key_env` read for the identity tuple but not used as the credential when key_cmd wins; inline `api_key` next) and `::_discover_flag` (`discover_models` defaults True; `"false"`/`"no"`/`"0"` strings coerce to False); `hermes_cli/model_switch.py::_models_config_is_allowlist` (a `discovered` catalog is never a pin; dict shape is per-model metadata, list shape is an allowlist); `hermes_cli/config.py:2739` (`custom_endpoint_key_env` — `HERMES_CUSTOM_<SLUG>_API_KEY` derivation). The Step 2.5 probe was rewritten 2026-09-21 (prose form) after the skills scanner rated the scripted curl|python and urllib forms as supply-chain/exfiltration shapes. **Re-pointed 2026-09-29 (drift #123):** `config.py` citations updated to `2739` at `5000e2993`. Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9`: `hermes_cli/model_switch_providers.py::_entry_credentials` (key_cmd resolved first and returned early; `key_env` read for the identity tuple but not used as the credential when key_cmd wins; inline `api_key` next) and `::_discover_flag` (`discover_models` defaults True; `"false"`/`"no"`/`"0"` strings coerce to False); `hermes_cli/model_switch.py::_models_config_is_allowlist` (a `discovered` catalog is never a pin; dict shape is per-model metadata, list shape is an allowlist); `hermes_cli/config.py:2739` (`custom_endpoint_key_env` — `HERMES_CUSTOM_<SLUG>_API_KEY` derivation). The Step 2.5 probe was rewritten 2026-09-21 (prose form) after the skills scanner rated the scripted curl|python and urllib forms as supply-chain/exfiltration shapes. **Re-pointed 2026-09-29 (drift #123):** `config.py` citations updated to `2739` at `5000e2993`. Re-verify before reuse.*
