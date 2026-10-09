@@ -1,7 +1,7 @@
 ---
 name: diagnosing-voice
 description: Diagnose Hermes voice mode issues — STT/TTS provider failures, audio device problems, latency, ffmpeg missing, and voice message transcription.
-version: 1.0.5
+version: 1.0.6
 metadata:
   hermes:
     tags: [hermes, voice, tts, stt, troubleshooting]
@@ -100,4 +100,4 @@ Run `hermes pm install ffmpeg` (PM-era install) or `apt install ffmpeg` / `brew 
 - `hermes_cli/tts.py` — TTS provider logic
 - `hermes_cli/stt.py` — STT provider logic
 
-*Facts re-verified 2026-09-21 against upstream source at commit `cedf4a3d78675283fa93e4e6ea2d6212bf414667`: `hermes_cli/voice.py`, `hermes_cli/tts.py`, `hermes_cli/stt.py`; plus the official docs (hermes-agent.nousresearch.com/docs/user-guide/features/voice-mode). Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `50035ef63c5536757e63bc1c1ffe4e5c19ac7fad`: `hermes_cli/voice.py`, `hermes_cli/tts.py`, `hermes_cli/stt.py`; plus the official docs (hermes-agent.nousresearch.com/docs/user-guide/features/voice-mode). Re-verify before reuse.*
