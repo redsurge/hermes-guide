@@ -2,11 +2,11 @@
 
 ## Supported Versions
 
-Only the latest published version (`0.6.0`) receives security fixes.
+Only the latest published version (`0.6.1`) receives security fixes.
 
 | Version | Supported |
 | --- | --- |
-| 0.6.0 | :white_check_mark: |
+| 0.6.1 | :white_check_mark: |
 
 ## Reporting a Vulnerability
 
