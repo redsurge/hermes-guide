@@ -1,7 +1,7 @@
 ---
 name: diagnosing-bot-mode
 description: Diagnose Hermes Bot Mode issues — bots not appearing, profile conflicts, bot-to-bot messaging failures, model/memory/skill routing per bot, and gateway connectivity.
-version: 1.0.3
+version: 1.0.4
 metadata:
   hermes:
     tags: [hermes, bot-mode, troubleshooting]
@@ -84,4 +84,4 @@ Add `ui_meta.hermes-bots: {}` to `~/.hermes/profiles/<bot-name>/config.yaml`, th
 - `hermes_cli/bot_mode.py` — bot profile discovery logic
 - `hermes_cli/profiles.py` — profile listing
 
-*Facts re-verified 2026-09-21 against upstream source at commit `cedf4a3d78675283fa93e4e6ea2d6212bf414667`: `hermes_cli/bot_mode.py`, `hermes_cli/profiles.py`; plus the official docs (hermes-agent.nousresearch.com/docs/user-guide/bot-mode). Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `50035ef63c5536757e63bc1c1ffe4e5c19ac7fad`: `hermes_cli/bot_mode.py`, `hermes_cli/profiles.py`; plus the official docs (hermes-agent.nousresearch.com/docs/user-guide/bot-mode). Re-verify before reuse.*
