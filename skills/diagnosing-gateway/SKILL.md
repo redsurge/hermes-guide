@@ -1,7 +1,7 @@
 ---
 name: diagnosing-gateway
 description: Diagnose Hermes gateway and messaging platform issues — bot not responding, platform allowlist confusion, token validation, gateway connectivity, and multi-platform setup.
-version: 1.1.2
+version: 1.1.3
 metadata:
   hermes:
     tags: [hermes, gateway, messaging, troubleshooting]
@@ -77,4 +77,4 @@ Run `hermes gateway start` to start the gateway, then verify with `hermes gatewa
 - `hermes_cli/gateway.py` — gateway CLI commands
 - `hermes_cli/platforms/` — platform-specific adapters
 
-*Facts re-verified 2026-09-28 against upstream source at commit `cedf4a3d78675283fa93e4e6ea2d6212bf414667`: `hermes_cli/gateway.py`, `hermes_cli/platforms/`; plus the official docs (hermes-agent.nousresearch.com/docs/user-guide/messaging/). Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9`: `hermes_cli/gateway.py`, `hermes_cli/platforms/`; plus the official docs (hermes-agent.nousresearch.com/docs/user-guide/messaging/). Re-verify before reuse.*

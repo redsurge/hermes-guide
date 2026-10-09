@@ -1,7 +1,7 @@
 ---
 name: diagnosing-triage
 description: "Route vague user descriptions to the correct diagnostic skill — a triage layer that maps symptoms to the right diagnosing-* playbook."
-version: 1.0.0
+version: 1.0.1
 metadata:
   hermes:
     tags: [hermes, triage, routing, diagnostics]
@@ -241,7 +241,7 @@ When multiple skills might apply, use these priority rules to decide which to lo
 
 3. **Path before feature config.** If the wrong Python interpreter is active or the venv layout is confusing, load `diagnosing-path` before any feature-specific skill. Path issues cause cascading failures that look like feature bugs.
 
-4. **Install before diagnosis.** If Hermes itself is broken (won't start, crashes on launch), load `installing-hermes` before any `diagnosing-*` skill. You can't diagnose a broken install.
+4. **Install before diagnosis.** If Hermes itself is broken (won't start, crashes on load), load `installing-hermes` before any `diagnosing-*` skill. You can't diagnose a broken install.
 
 5. **Platform before bot-mode.** If the bot isn't responding, load `diagnosing-gateway` before `diagnosing-bot-mode`. Gateway connectivity is a prerequisite for bot profiles.
 
@@ -274,4 +274,4 @@ When the triage skill routes to a diagnostic skill, the model reports findings u
 - **Reason**: "High load + idle CPU + plugin load timeouts = host pressure, not Hermes config"
 - **Next step**: "Run `bash skills/diagnosing-host-pressure/scripts/host_pressure_probe.sh` and follow the resolution order in that skill."
 
-*Facts re-verified 2026-10-08 against upstream source at commit `50035ef63c5536757e63bc1c1ffe4e5c19ac7fad` (the repo HEAD at the time of authoring); the triage mappings are derived from the skill descriptions in this repo's `skills/` directory. Re-verify before reuse.*
+*Triage mappings derived from the skill descriptions in this repo's `skills/` directory (2026-10-09). No upstream source verification is claimed — this skill routes between hermes-guide's own skills. Re-verify before reuse.*

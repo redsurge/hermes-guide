@@ -1,7 +1,7 @@
 ---
 name: diagnosing-auth
 description: "Diagnose hub-install failures that end in '… found in any source' / 'Could not find … in any source' on public repos with gh logged in (historic phrasing: 'Could not fetch from any source', see #98725) — a dead or shadowing GITHUB_TOKEN in the profile .env, the gh-cli fallback, 401-vs-anonymous probes, and rate-limit verdicts."
-version: 1.2.6
+version: 1.2.7
 metadata:
   hermes:
     tags: [hermes, auth, github, token, rate-limit, troubleshooting, diagnosing]
@@ -95,4 +95,4 @@ Comment out or delete the `GITHUB_TOKEN` line in `$HERMES_HOME/.env`, then re-ru
 
 ---
 
-*Facts re-verified 2026-09-14 against upstream source at commit `46a0daee58abbc1b07f84f505a5ba90f1958295c`: `tools/skills_hub_github.py` (`_resolve_token`, `_try_pat`, `_try_gh_cli`, `is_authenticated`), `hermes_cli/skills_hub.py` (error strings), `agent/secret_scope.py`; plus the issue tracker (#98725 open). Module paths and error strings changed since the previous revision — the mechanism did not. Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9`: `tools/skills_hub_github.py` (`_resolve_token`, `_try_pat`, `_try_gh_cli`, `is_authenticated`), `hermes_cli/skills_hub.py` (error strings), `agent/secret_scope.py`; plus the issue tracker (#98725 open). Module paths and error strings changed since the previous revision — the mechanism did not. Re-verify before reuse.*
