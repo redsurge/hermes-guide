@@ -1,7 +1,7 @@
 ---
 name: diagnosing-cron
 description: Diagnose Hermes cron job issues — jobs not firing, scheduler dead, wedged fire-claim, timezone issues, and delivery failures.
-version: 1.0.1
+version: 1.0.2
 metadata:
   hermes:
     tags: [hermes, cron, scheduling, troubleshooting]
@@ -89,4 +89,4 @@ Run `hermes gateway restart` to bring the gateway (and scheduler) back up, then 
 - `hermes_cli/cron.py` — cron CLI commands
 - `cron/jobs.py` — job execution logic
 
-*Facts re-verified 2026-09-21 against upstream source at commit `cedf4a3d78675283fa93e4e6ea2d6212bf414667`: `hermes_cli/cron.py`, `cron/jobs.py`; plus the official docs (hermes-agent.nousresearch.com/docs/user-guide/features/cron). Re-verify before reuse.*
+*Facts re-verified 2026-10-09 against upstream source at commit `b56a10246e81e23d10bf6f49ae176c082db53ed9`: `hermes_cli/cron.py`, `cron/jobs.py`; plus the official docs (hermes-agent.nousresearch.com/docs/user-guide/features/cron). Re-verify before reuse.*
