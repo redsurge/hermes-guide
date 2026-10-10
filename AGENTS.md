@@ -16,7 +16,7 @@ to work in the repo**.
 - **Skills** — `twenty` `skills/<name>/SKILL.md` files: one install guide (`installing-hermes`), one configuration map (`hermes-configuration-guide`), eighteen `diagnosing-*` playbooks. They install separately, through the skills tap.
 <!-- END GENERATED: inventory -->
 
-Two install paths, both out of tree: the plugin (`hermes plugins install iap/hermes-guide --enable`) and the tap (`hermes skills tap add iap/hermes-guide`). `$HERMES_HOME` is `~/.hermes` on POSIX and `%LOCALAPPDATA%\hermes` on native Windows; `hermes config path` is the ground-truth command.
+Two install paths, both out of tree: the plugin (`hermes plugins install redsurge/hermes-guide --enable`) and the tap (`hermes skills tap add redsurge/hermes-guide`). `$HERMES_HOME` is `~/.hermes` on POSIX and `%LOCALAPPDATA%\hermes` on native Windows; `hermes config path` is the ground-truth command.
 
 ## Layout
 
@@ -35,6 +35,7 @@ Two install paths, both out of tree: the plugin (`hermes plugins install iap/her
 | `tools/test_*.py` | Regression suites for the plugin and for `tools/` itself |
 | `tools/render_docs.py` | Renders the generated blocks in README.md and AGENTS.md from the repo |
 | `tools/pr_metadata_labels.py` | PR label/priority parser shared by the labelling workflows |
+| `tools/gen_changelog.py` | Generates CHANGELOG.md from conventional commits |
 | `.github/workflows/reusable-ci.yml` | The CI body: ubuntu+windows × Python 3.11/3.12 matrix, all gates |
 | `.github/workflows/ci.yml` | Thin caller that triggers `reusable-ci.yml` and passes it `base-ref` / `run-full-gate` |
 | `.github/workflows/upstream-drift.yml` | Weekly watch; opens an issue when Hermes changes a watched file or drift-prone fact |
@@ -200,7 +201,7 @@ PR bodies, comments, and doc or skill prose.
 - **Short and direct.** Lead with the result. Reasoning goes after it, or in the
   file you edited.
 - **Technical prose only.** No enthusiasm, no reassurance, no restating the
-  request back before answering it.
+  request before answering it.
 - **No cheerful filler.** "Thanks @user", not `Thanks so much @user!`. Drop
   `great question`, `hope this helps`, and apologies for things that were not
   your fault.

@@ -8,7 +8,7 @@ description: >-
 manifest_version: 1
 api_version: 1
 license: MIT
-homepage: https://github.com/iap/hermes-guide
+homepage: https://github.com/redsurge/hermes-guide
 tags: [diagnostics, observability, troubleshooting]
 python_dependencies:
   - PyYAML>=6.0,<7
