@@ -577,7 +577,7 @@ def check_skills():
         missing = sorted(guide_names - installed)
         if missing:
             loop = " ".join(missing)
-            cmd = f'for s in {loop}; do hermes skills install "iap/hermes-guide/skills/$s"; done'
+            cmd = f'for s in {loop}; do hermes skills install "redsurge/hermes-guide/skills/$s"; done'
             return {
                 "status": "informational",
                 "reason": (
