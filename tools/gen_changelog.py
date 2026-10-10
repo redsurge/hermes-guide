@@ -135,7 +135,7 @@ def format_release(tag: str, date: str, commits: list[dict]) -> str:
         lines.append("")
         for c in by_type[t]:
             scope = f"**{c['scope']}**: " if c["scope"] else ""
-            pr = f" ([#{c['pr']}](https://github.com/iap/hermes-guide/pull/{c['pr']}))" if c["pr"] else ""
+            pr = f" ([#{c['pr']}](https://github.com/redsurge/hermes-guide/pull/{c['pr']}))" if c["pr"] else ""
             lines.append(f"- {scope}{c['subject']}{pr}")
         lines.append("")
     return "\n".join(lines)

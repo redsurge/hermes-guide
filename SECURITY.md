@@ -11,7 +11,7 @@ Only the latest published version (`0.7.0`) receives security fixes.
 ## Reporting a Vulnerability
 
 If you discover a security vulnerability, please report it responsibly by
-opening a [private security advisory](https://github.com/iap/hermes-guide/security/advisories/new). We will respond as soon as possible and work with you to address the issue.
+opening a [private security advisory](https://github.com/redsurge/hermes-guide/security/advisories/new). We will respond as soon as possible and work with you to address the issue.
 
 Please do not publicly disclose the vulnerability until it has been resolved.
 

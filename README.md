@@ -16,13 +16,13 @@ It **complements — never replaces —** Hermes's own diagnostics (`hermes doct
 ## Install the plugin
 
 ```bash
-hermes plugins install iap/hermes-guide --enable
+hermes plugins install redsurge/hermes-guide --enable
 ```
 
 This clones the repo from GitHub and enables it. To pin an immutable commit:
 
 ```bash
-hermes plugins install iap/hermes-guide --ref <40-char-SHA> --enable
+hermes plugins install redsurge/hermes-guide --ref <40-char-SHA> --enable
 ```
 
 ### Manual install
@@ -31,7 +31,7 @@ Alternatively, clone this repo into your Hermes plugins directory:
 
 ```bash
 # POSIX / WSL: $HERMES_HOME is ~/.hermes
-git clone --depth 1 https://github.com/iap/hermes-guide ~/.hermes/plugins/hermes-guide
+git clone --depth 1 https://github.com/redsurge/hermes-guide ~/.hermes/plugins/hermes-guide
 hermes plugins enable hermes-guide
 ```
 
@@ -64,18 +64,18 @@ Drift findings are then logged at session start/end — watch `hermes logs --fol
 Installing the plugin does **not** install the skills; they ship as separate, opt-in reference material. Add the repo as a skills tap, then install what you want:
 
 ```bash
-hermes skills tap add iap/hermes-guide
-hermes skills install iap/hermes-guide/skills/diagnosing-mcp
+hermes skills tap add redsurge/hermes-guide
+hermes skills install redsurge/hermes-guide/skills/diagnosing-mcp
 ```
 
 > [!IMPORTANT]
-> The identifier must include the `skills/` prefix — it is the repo-relative path to the skill's `SKILL.md`. The shorter `iap/hermes-guide/<name>` form does not resolve.
+> The identifier must include the `skills/` prefix — it is the repo-relative path to the skill's `SKILL.md`. The shorter `redsurge/hermes-guide/<name>` form does not resolve.
 
 ### Install all skills at once
 
 <!-- BEGIN GENERATED: install-all-loop -->
 ```bash
-for s in diagnosing-auth diagnosing-bot-mode diagnosing-browser diagnosing-cli-tui diagnosing-commands diagnosing-cron diagnosing-desktop diagnosing-gateway diagnosing-hooks diagnosing-host-pressure diagnosing-mcp diagnosing-memory diagnosing-path diagnosing-plugins diagnosing-providers diagnosing-skills diagnosing-triage diagnosing-voice hermes-configuration-guide installing-hermes; do hermes skills install "iap/hermes-guide/skills/$s"; done
+for s in diagnosing-auth diagnosing-bot-mode diagnosing-browser diagnosing-cli-tui diagnosing-commands diagnosing-cron diagnosing-desktop diagnosing-gateway diagnosing-hooks diagnosing-host-pressure diagnosing-mcp diagnosing-memory diagnosing-path diagnosing-plugins diagnosing-providers diagnosing-skills diagnosing-triage diagnosing-voice hermes-configuration-guide installing-hermes; do hermes skills install "redsurge/hermes-guide/skills/$s"; done
 ```
 <!-- END GENERATED: install-all-loop -->
 
