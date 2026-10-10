@@ -52,6 +52,7 @@ Two install paths, both out of tree: the plugin (`hermes plugins install iap/her
 | `CONTRIBUTING.md` | The authoring standard: naming, content rules, voice |
 | `README.md` | User-facing overview, install instructions, skill table |
 | `SECURITY.md` | Security policy |
+| `CHANGELOG.md` | Release history generated from conventional commits |
 | `LICENSE` | MIT |
 | `.gitignore` | The durable control for what never enters the index |
 

@@ -82,8 +82,72 @@ def _setup_cli(subparser):
     )
 
 
+_version_check_ran = False
+
+
+def _version_check():
+    """Check if a newer version is available; log a warning if so.
+
+    Read-only: uses git ls-remote to query the remote without writing
+    local refs. Fails silently when the plugin is not a git clone
+    (e.g. copied) or when git is unavailable.
+    Rate-limited: runs at most once per process.
+    """
+    global _version_check_ran
+    if _version_check_ran:
+        return
+    _version_check_ran = True
+    try:
+        import re
+        import subprocess
+        from pathlib import Path
+
+        plugin_dir = Path(__file__).resolve().parent
+        # Verify this is the root of the plugin's own clone
+        top_proc = subprocess.run(
+            ["git", "rev-parse", "--show-toplevel"],  # nosec B607
+            capture_output=True, text=True, timeout=5, cwd=plugin_dir,
+        )
+        if top_proc.returncode != 0:
+            return
+        toplevel = Path(top_proc.stdout.strip())
+        if toplevel != plugin_dir:
+            return
+        # Read remote tags without writing local refs
+        proc = subprocess.run(
+            ["git", "ls-remote", "--tags", "--sort=v:refname", "origin"],  # nosec B607
+            capture_output=True, text=True, timeout=10, cwd=plugin_dir,
+        )
+        if proc.returncode != 0:
+            return
+        # Parse tags: only full X.Y.Z, skip prerelease/malformed
+        tag_re = re.compile(r"refs/tags/v(\d+\.\d+\.\d+)$")
+        versions = []
+        for line in proc.stdout.splitlines():
+            m = tag_re.search(line)
+            if m:
+                versions.append(m.group(1))
+        if not versions:
+            return
+        latest = versions[-1]  # sorted by v:refname, last is newest
+        # Compare versions
+        def parse_ver(v: str) -> tuple[int, int, int]:
+            parts = v.split(".")
+            return (int(parts[0]), int(parts[1]), int(parts[2]))
+
+        if parse_ver(latest) > parse_ver(__version__):
+            logger.warning(
+                "hermes-guide: new version available (%s → %s). "
+                "Run: hermes plugins update hermes-guide",
+                __version__, latest,
+            )
+    except Exception:
+        pass  # nosec B110 - version check is best-effort; never fail a session
+
+
 def _proactive_check(**_kwargs):
     """Run drift checks at a session boundary; log findings (observer-only)."""
+    _version_check()
     for label, r in checks.run_all().items():
         status = r.get("status")
         if status == "broken":

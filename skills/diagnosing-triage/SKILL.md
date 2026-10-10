@@ -36,6 +36,11 @@ Is the problem about INSTALLING or UPGRADING Hermes itself?
   └─ YES → installing-hermes
   └─ NO ↓
 
+Is the problem about HOST RESOURCES — high load, OOM, plugin discards,
+  resource exhaustion, multiple surfaces failing at once?
+  └─ YES → diagnosing-host-pressure
+  └─ NO ↓
+
 Is the problem about the DESKTOP APP (Electron) not launching,
   showing a blank window, or npm/build errors?
   └─ YES → diagnosing-desktop
@@ -72,11 +77,6 @@ Is the problem about SCHEDULED JOBS — cron not firing, scheduler dead,
 
 Is the problem about VOICE — STT/TTS failures, audio device, latency, ffmpeg?
   └─ YES → diagnosing-voice
-  └─ NO ↓
-
-Is the problem about HOST RESOURCES — high load, OOM, plugin discards,
-  resource exhaustion, multiple surfaces failing at once?
-  └─ YES → diagnosing-host-pressure
   └─ NO ↓
 
 Is the problem about AUTH — "Could not fetch from any source", GitHub 401,

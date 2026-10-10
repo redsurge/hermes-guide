@@ -85,7 +85,7 @@ _CANDIDATE_UNUSABLE_ERRNOS = frozenset({
 def _run(cmd, timeout=20):
     """Run a subprocess; return (returncode, stdout, stderr) as separate strings."""
     try:
-        out = subprocess.run(
+        out = subprocess.run(  # nosec B607
             cmd, capture_output=True, text=True, encoding="utf-8",
             errors="replace", timeout=timeout,
         )
@@ -106,7 +106,7 @@ def _run(cmd, timeout=20):
         if exc.errno in _CANDIDATE_UNUSABLE_ERRNOS:
             return -126, "", f"{cmd[0]}: cannot execute ({exc.errno}): {exc.strerror}"
         return -1, "", repr(exc)
-    except Exception as exc:
+    except Exception as exc:  # nosec B110
         return -1, "", repr(exc)
 
 
