@@ -288,7 +288,7 @@ def selftest() -> int:
         "blank_issues_enabled: false\n"
         "contact_links:\n"
         "  - name: Question about a skill\n"
-        "    url: https://github.com/iap/hermes-guide/discussions\n"
+        "    url: https://github.com/redsurge/hermes-guide/discussions\n"
         "    about: Ask here.\n"
     )
     promise = "## Questions\n\nA question is not a defect report.\n"
@@ -346,7 +346,7 @@ def selftest() -> int:
         # A list item with no `contact_links:` key above it is invalid YAML,
         # and must not be read as a configured link.
         ({"config.yml": "blank_issues_enabled: false\n- name: A\n"
-                        "  url: https://github.com/iap/hermes-guide/discussions\n"
+                        "  url: https://github.com/redsurge/hermes-guide/discussions\n"
                         "  about: no key above me\n"}, {},
          ["list item outside contact_links"]),
         # The chooser shows `name`, never the filename: a defect form called

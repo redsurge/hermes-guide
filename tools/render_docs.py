@@ -146,7 +146,7 @@ def _readme_install_loop(ctx: dict) -> list[str]:
     joined = " ".join(sorted(names))
     return [
         "```bash",
-        f'for s in {joined}; do hermes skills install "iap/hermes-guide/skills/$s"; done',
+        f'for s in {joined}; do hermes skills install "redsurge/hermes-guide/skills/$s"; done',
         "```",
     ]
 

@@ -86,7 +86,7 @@ def case_upstream_drift_filed(mod):
          mock.patch.object(mod, "verify_ci_pin", fake_verify_ci_pin), \
          mock.patch.object(mod, "_file_issue", fake_file_issue), \
          mock.patch.object(mod, "_list_open_issues", fake_list_open_issues), \
-         mock.patch.dict("os.environ", {"GITHUB_REPOSITORY": "iap/hermes-guide",
+         mock.patch.dict("os.environ", {"GITHUB_REPOSITORY": "redsurge/hermes-guide",
                                         "DRIFT_DRY_RUN": "", "DRIFT_NO_CAP": ""}):
         rc = mod.main()
 
@@ -111,7 +111,7 @@ def case_exact_title_dedup(mod):
     with mock.patch.object(subprocess, "run") as mock_run:
         mock_run.return_value = subprocess.CompletedProcess(
             "gh", returncode=0, stdout=fake_api_response, stderr="")
-        result = mod._list_open_issues("iap/hermes-guide", mod.ISSUE_TITLE_UPSTREAM)
+        result = mod._list_open_issues("redsurge/hermes-guide", mod.ISSUE_TITLE_UPSTREAM)
     # Only the exact match should survive.
     assert len(result) == 1, f"expected 1 exact match, got {len(result)}: {result}"
     assert result[0]["title"] == mod.ISSUE_TITLE_UPSTREAM
@@ -124,7 +124,7 @@ def case_transport_failure_fails_run(mod):
         mock_run.return_value = subprocess.CompletedProcess(
             "gh", returncode=1, stdout="", stderr="network down")
         try:
-            mod._list_open_issues("iap/hermes-guide", mod.ISSUE_TITLE_UPSTREAM)
+            mod._list_open_issues("redsurge/hermes-guide", mod.ISSUE_TITLE_UPSTREAM)
             assert False, "_list_open_issues should have raised"
         except RuntimeError as exc:
             assert "gh issue list failed" in str(exc)
@@ -145,7 +145,7 @@ def case_file_issue_skips_when_open(mod):
     ), \
          mock.patch.object(mod, "_file_issue", side_effect=mod._file_issue) as patched, \
          mock.patch.object(subprocess, "run") as mock_run:
-        rc = patched("iap/hermes-guide", mod.ISSUE_TITLE_UPSTREAM, "body", "drift")
+        rc = patched("redsurge/hermes-guide", mod.ISSUE_TITLE_UPSTREAM, "body", "drift")
     assert rc == 0
     assert calls == []
     # gh issue create must never be called when the issue is already open.
@@ -203,7 +203,7 @@ def case_pin_failure_fails_closed(mod):
              return_value=([{"sha": "abc1234", "date": "2026-09-11",
                              "subject": "fix(mcp): rename", "files": []}], [])), \
          mock.patch.object(mod, "_file_issue", fake_file_issue), \
-         mock.patch.dict("os.environ", {"GITHUB_REPOSITORY": "iap/hermes-guide"}):
+         mock.patch.dict("os.environ", {"GITHUB_REPOSITORY": "redsurge/hermes-guide"}):
         rc = mod.main()
 
     assert rc == 1
