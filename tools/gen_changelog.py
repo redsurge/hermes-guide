@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+﻿#!/usr/bin/env python3
 """Generate CHANGELOG.md from conventional commits since the last tag.
 
 Usage:
@@ -14,7 +14,7 @@ Conventional Commits format:
 
     feat(skills): add diagnosing-triage meta-skill (#173)
 
-This tool is stdlib-only — no external dependencies.
+This tool is stdlib-only â€” no external dependencies.
 """
 
 from __future__ import annotations
@@ -26,7 +26,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 
-# Phrasing that trips the self-claim guard — sanitize generated output
+# Phrasing that trips the self-claim guard â€” sanitize generated output
 _SELF_CLAIM_RE = re.compile(
     r"drop 'Content is verified' self-claim",
     re.IGNORECASE,
@@ -45,7 +45,7 @@ CONVENTIONAL_RE = re.compile(
     r"(?:\s+\(#(?P<pr>\d+)\))?\s*$"
 )
 
-# No emoji — the project tone guard forbids emoji in prose.
+# No emoji â€” the project tone guard forbids emoji in prose.
 # Type labels are plain text.
 TYPE_LABELS = {
     "feat": "Features",
@@ -135,7 +135,7 @@ def format_release(tag: str, date: str, commits: list[dict]) -> str:
         lines.append("")
         for c in by_type[t]:
             scope = f"**{c['scope']}**: " if c["scope"] else ""
-            pr = f" ([#{c['pr']}](https://github.com/iap/hermes-guide/pull/{c['pr']}))" if c["pr"] else ""
+            pr = f" ([#{c['pr']}](https://github.com/redsurge/hermes-guide/pull/{c['pr']}))" if c["pr"] else ""
             lines.append(f"- {scope}{c['subject']}{pr}")
         lines.append("")
     return "\n".join(lines)
@@ -145,7 +145,7 @@ def main(argv: list[str]) -> int:
     target = argv[1] if len(argv) > 1 else None
     tags = get_tags()
     if not tags:
-        print("No tags found — cannot generate changelog", file=sys.stderr)
+        print("No tags found â€” cannot generate changelog", file=sys.stderr)
         return 1
 
     header = "# Changelog\n\nAll notable changes to hermes-guide are documented here.\n\n"

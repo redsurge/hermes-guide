@@ -1,4 +1,4 @@
-# AGENTS.md
+﻿# AGENTS.md
 
 Operating instructions for AI agents working **in this repository**. It answers
 two questions: *what do I run and what must not break*, and *how to write about
@@ -12,30 +12,30 @@ to work in the repo**.
 ## What ships
 
 <!-- BEGIN GENERATED: inventory -->
-- **Plugin** — `plugin.yaml` + `__init__.py` / `checks.py` / `constants.py`. Registers `/hermes-doctor` and `hermes guide` (seven read-only health checks: config, mcp, skills, commands, hooks, plugins, memories).
-- **Skills** — `twenty` `skills/<name>/SKILL.md` files: one install guide (`installing-hermes`), one configuration map (`hermes-configuration-guide`), eighteen `diagnosing-*` playbooks. They install separately, through the skills tap.
+- **Plugin** â€” `plugin.yaml` + `__init__.py` / `checks.py` / `constants.py`. Registers `/hermes-doctor` and `hermes guide` (seven read-only health checks: config, mcp, skills, commands, hooks, plugins, memories).
+- **Skills** â€” `twenty` `skills/<name>/SKILL.md` files: one install guide (`installing-hermes`), one configuration map (`hermes-configuration-guide`), eighteen `diagnosing-*` playbooks. They install separately, through the skills tap.
 <!-- END GENERATED: inventory -->
 
-Two install paths, both out of tree: the plugin (`hermes plugins install iap/hermes-guide --enable`) and the tap (`hermes skills tap add iap/hermes-guide`). `$HERMES_HOME` is `~/.hermes` on POSIX and `%LOCALAPPDATA%\hermes` on native Windows; `hermes config path` is the ground-truth command.
+Two install paths, both out of tree: the plugin (`hermes plugins install redsurge/hermes-guide --enable`) and the tap (`hermes skills tap add redsurge/hermes-guide`). `$HERMES_HOME` is `~/.hermes` on POSIX and `%LOCALAPPDATA%\hermes` on native Windows; `hermes config path` is the ground-truth command.
 
 ## Layout
 
 | Path | Purpose |
 |---|---|
-| `plugin.yaml` | Plugin manifest — name, version, config schema. Declares no `capabilities:` on purpose |
+| `plugin.yaml` | Plugin manifest â€” name, version, config schema. Declares no `capabilities:` on purpose |
 | `__init__.py` | Plugin entrypoint; registers `/hermes-doctor` and `hermes guide` |
 | `checks.py` | The read-only health checks and the `_CHECKS` registry every doc derives its scope list from |
 | `constants.py` | Single source of truth for names/values that drift across Hermes versions |
 | `pyproject.toml` | Project metadata and the mypy configuration |
 | `skills/<name>/SKILL.md` | The skills tap surface (one directory per skill) |
-| `tools/check_*.py` | Guard linters — every one is a machine gate with an exit code |
+| `tools/check_*.py` | Guard linters â€” every one is a machine gate with an exit code |
 | `tools/check_doc_style.py` | Tone guard: emoji outside Python string literals, filler phrases in Markdown prose |
 | `tools/check_issue_templates.py` | Reporter-surface guard: issue-template schema, and docs that promise a route the chooser does not offer |
 | `tools/check_skill_dogfood.py` | Read-only live-install smoke test: version, config path, skills, plugins, doctor |
 | `tools/test_*.py` | Regression suites for the plugin and for `tools/` itself |
 | `tools/render_docs.py` | Renders the generated blocks in README.md and AGENTS.md from the repo |
 | `tools/pr_metadata_labels.py` | PR label/priority parser shared by the labelling workflows |
-| `.github/workflows/reusable-ci.yml` | The CI body: ubuntu+windows × Python 3.11/3.12 matrix, all gates |
+| `.github/workflows/reusable-ci.yml` | The CI body: ubuntu+windows Ã— Python 3.11/3.12 matrix, all gates |
 | `.github/workflows/ci.yml` | Thin caller that triggers `reusable-ci.yml` and passes it `base-ref` / `run-full-gate` |
 | `.github/workflows/upstream-drift.yml` | Weekly watch; opens an issue when Hermes changes a watched file or drift-prone fact |
 | `.github/workflows/validate-claim.yml` | Re-runs the hermetic gates and machine-checks the PR's validation table |
@@ -48,7 +48,7 @@ Two install paths, both out of tree: the plugin (`hermes plugins install iap/her
 | `.github/dependabot.yml` | Weekly version-update PRs for the SHA-pinned actions |
 | `.pre-commit-config.yaml` | Local hook running the hermetic gate tier at commit time |
 | `AGENTS.md` | This file |
-| `CLAUDE.md` | `@AGENTS.md` import — the Claude Code entry point |
+| `CLAUDE.md` | `@AGENTS.md` import â€” the Claude Code entry point |
 | `CONTRIBUTING.md` | The authoring standard: naming, content rules, voice |
 | `README.md` | User-facing overview, install instructions, skill table |
 | `SECURITY.md` | Security policy |
@@ -63,7 +63,7 @@ at the root or under `skills/` that CI or agents are expected to run.
 ## Run this before you claim done
 
 ```bash
-python tools/check_gates.py          # the hermetic tier — 5 gates, no network/git/Hermes
+python tools/check_gates.py          # the hermetic tier â€” 5 gates, no network/git/Hermes
 python -m py_compile __init__.py checks.py constants.py
 hermes plugins doctor . --ci         # needs a local Hermes
 ```
@@ -81,27 +81,27 @@ python tools/check_skill_provenance.py
 CI is the authority and runs more than the above: the `tools/test_*.py`
 regression suites, `check_citation_integrity.py` against the pinned upstream
 revision, mypy, and bandit. Several of those need a Hermes checkout or a
-network — if you skip one, say so explicitly in the PR's validation table rather
+network â€” if you skip one, say so explicitly in the PR's validation table rather
 than leaving it blank.
 
 > [!NOTE]
 > Every guard in `tools/` reads *text*, so a script that parses host output
 > wrongly still passes all of them. Executable scripts shipped in a skill
 > (`skills/*/scripts/`) need behavioral coverage in `tools/test_*.py` that runs
-> them against stubbed inputs — a green guard suite is not evidence the script
+> them against stubbed inputs â€” a green guard suite is not evidence the script
 > is correct.
 
 ## Rules the gates enforce
 
-Learn these from the guard, not from memory — each one names its own script.
+Learn these from the guard, not from memory â€” each one names its own script.
 
 ### Three output layers, never mixed
 
 | Layer | Lives in | Contract |
 |---|---|---|
-| Hermes CLI | upstream `hermes …` | Whatever Hermes prints. Parse it inside a check; never rebrand or rewrite a Hermes message as ours |
+| Hermes CLI | upstream `hermes â€¦` | Whatever Hermes prints. Parse it inside a check; never rebrand or rewrite a Hermes message as ours |
 | Plugin UX | `__init__.py` + `checks.py` | Check **envelopes** (`status` / `reason` / `detail`); `+/x/~/?` marks; `hermes guide` exits `0` healthy, `1` broken/unknown, `2` bad scope |
-| Repo harness | `tools/` | Machine output — `OK:` / `FAIL` / `error:`, success on stdout, failures on stderr, non-zero exit. `--selftest` / `--warn` stay harness-only |
+| Repo harness | `tools/` | Machine output â€” `OK:` / `FAIL` / `error:`, success on stdout, failures on stderr, non-zero exit. `--selftest` / `--warn` stay harness-only |
 
 - **Checks return data; the plugin formats UX.** A check must not print a report
   or invent a second exit-code scheme. Return an envelope; `_format_result` and
@@ -116,7 +116,7 @@ Learn these from the guard, not from memory — each one names its own script.
 ### Read-only, always
 
 `checks.py` resolves paths, reads files, parses, and shells out to read-only
-`hermes …` commands. It never mutates config and never auto-fixes
+`hermes â€¦` commands. It never mutates config and never auto-fixes
 (`tools/check_no_mutation.py`). A new check returns an envelope and tolerates
 malformed input without crashing.
 
@@ -124,18 +124,18 @@ malformed input without crashing.
 
 ### Values that drift go in `constants.py`
 
-When an upstream name or value changes, edit `constants.py` — not a string
+When an upstream name or value changes, edit `constants.py` â€” not a string
 literal in `checks.py`. `tools/check_upstream_drift.py` watches these upstream.
 
 ### Versions and provenance
 
 - A changed `SKILL.md` needs a higher `version` (`check_skill_version_bump.py`,
-  ordered — a downgrade fails too).
+  ordered â€” a downgrade fails too).
 - `plugin.yaml`, `__init__.py`, `SECURITY.md`, and `pyproject.toml` must agree on
   the plugin version (`check_version_consistency.py`).
 - Every skill ends with a dated, upstream-anchored provenance footer on its final
   non-empty line (`check_skill_provenance.py`). Refresh the date when you
-  re-check the facts — do not touch it when you only reworded prose, or the
+  re-check the facts â€” do not touch it when you only reworded prose, or the
   footer starts claiming verification that did not happen.
 - File/symbol citations (`path.py::symbol`, `path.py:123`) must resolve against
   the revision in `.github/upstream-drift.baseline`
@@ -150,17 +150,17 @@ local until the user explicitly asks for it.
 
 | Commit | Do not commit |
 |---|---|
-| `plugin.yaml`, `__init__.py`, `checks.py`, `constants.py`, `pyproject.toml` | Secrets and env files — already gitignored, never force-add |
+| `plugin.yaml`, `__init__.py`, `checks.py`, `constants.py`, `pyproject.toml` | Secrets and env files â€” already gitignored, never force-add |
 | `skills/*/SKILL.md` | Agent/verification scratch (`.cluster/`, `.verify/`, root `tmp*.json`, `q*.json`, `.openclaw/`) |
 | `tools/*.py`, `.github/workflows/` | IDE/OS junk, venvs, caches, logs, archives |
-| Docs (`README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `LICENSE`) | Unsolicited new top-level files or directories — ask first |
+| Docs (`README.md`, `AGENTS.md`, `CONTRIBUTING.md`, `SECURITY.md`, `LICENSE`) | Unsolicited new top-level files or directories â€” ask first |
 | A deliberate `.gitignore` entry when a private path keeps recurring | Personal notes, one-off probes, "just in case" dumps |
 
 - **`.gitignore` is the durable control; this table is the reminder.** Extend the
   ignore rules rather than relying on remembering what not to `git add`.
 - **Never `git add -A` / `git add .`** here. Stage named paths.
 - **User intent wins.** If they want a previously private path published, stage it
-  on purpose and say so in the commit message — do not silently broaden the ignore
+  on purpose and say so in the commit message â€” do not silently broaden the ignore
   rules afterwards.
 
 ### Where a change goes
@@ -181,7 +181,7 @@ Windows, macOS/POSIX), each with its own checkout and its own installed Hermes.
 
 - **Verify platform-dependent facts only on your own machine.** `$HERMES_HOME`
   resolution, CLI/TUI behavior, installers, paths, shells. Never assert a platform
-  fact you could not confirm here — the session on that platform owns its
+  fact you could not confirm here â€” the session on that platform owns its
   verification. The Windows-native agent owns `diagnosing-cli-tui` and the Windows
   sides of `diagnosing-path` / `diagnosing-desktop`; the POSIX agent owns
   `~/.hermes` behavior.
@@ -189,12 +189,12 @@ Windows, macOS/POSIX), each with its own checkout and its own installed Hermes.
   shared skill text) and leave platform-specific wording the other environment
   can adjust.
 - **Expect parallel sessions.** Rebase before pushing, check open PRs before
-  starting overlapping work — duplicate fixes have collided before (#54/#55).
+  starting overlapping work â€” duplicate fixes have collided before (#54/#55).
 - The PR template's **Environment** block exists for this. Fill it in.
 
 ## Tone
 
-Applies to everything you write here — replies in this session, commit messages,
+Applies to everything you write here â€” replies in this session, commit messages,
 PR bodies, comments, and doc or skill prose.
 
 - **Short and direct.** Lead with the result. Reasoning goes after it, or in the
@@ -207,7 +207,7 @@ PR bodies, comments, and doc or skill prose.
 - **State the gap instead of smoothing it over.** If a check did not run, say so.
   If you are unsure, name the part you are unsure about and what would resolve it.
 
-The artifact-level rules — no emoji in commits, PR bodies, or source — and their
+The artifact-level rules â€” no emoji in commits, PR bodies, or source â€” and their
 carve-outs are in [CONTRIBUTING.md](CONTRIBUTING.md#tone). The mechanically
 decidable half is enforced by `tools/check_doc_style.py`.
 
@@ -216,8 +216,8 @@ decidable half is enforced by `tools/check_doc_style.py`.
 Applies when the answer is not a one-liner. Brevity is governed in **Tone**
 above; this covers what a longer answer owes the reader.
 
-- Structure a non-trivial design or problem as problem → concrete example or
-  short trace → solution, then say why the solution is necessary rather than
+- Structure a non-trivial design or problem as problem â†’ concrete example or
+  short trace â†’ solution, then say why the solution is necessary rather than
   optional complexity.
 - Prefer concrete behavior and a small illustration over an abstract summary,
   dense terminology, or an unexplained list of changes. Name the exact command,
@@ -231,21 +231,21 @@ Details live in the skills. These are the one-liners worth keeping in your head.
 
 > [!IMPORTANT]
 > **Don't guess Hermes hook event names.** The valid set is
-> `hermes_cli/plugins.py::VALID_HOOKS` and it grows across releases — read the
+> `hermes_cli/plugins.py::VALID_HOOKS` and it grows across releases â€” read the
 > installed source, never a hardcoded count.
 
 > [!WARNING]
 > **Don't confuse Hermes with Claude Code or ZCode.** Hermes has no standalone
 > command files (commands come from built-ins, skills-as-slash, bundles, and
 > plugins), hooks span four separate systems, and plugins are `plugin.yaml` +
-> `register(ctx)` — not `plugin.json`. See `diagnosing-commands` and
+> `register(ctx)` â€” not `plugin.json`. See `diagnosing-commands` and
 > `diagnosing-hooks`.
 
 > [!WARNING]
 > **Don't hardcode a venv path.** Older checkouts carry `venv/` and `.venv/` side
 > by side and `project_venv_dir()` resolves `venv` first; PM-era installs have no
 > in-tree venv at all and `project_venv_dir()` returns `None` even when a
-> dependency environment exists — ask PM (`committed_venv()` for the directory,
+> dependency environment exists â€” ask PM (`committed_venv()` for the directory,
 > `project_python()` for the interpreter, and they are not interchangeable).
 > `diagnosing-path` has the resolution order and the cross-platform patterns.
 
@@ -263,5 +263,5 @@ Details live in the skills. These are the one-liners worth keeping in your head.
 
 State plainly what you checked, what passed, and what you skipped. A validation
 table with honest `not run` entries is accepted; a claim that outruns the evidence
-is not — `validate-claim.yml` re-runs the hermetic gates against your PR head and
+is not â€” `validate-claim.yml` re-runs the hermetic gates against your PR head and
 fails the check if your table does not match reality.
