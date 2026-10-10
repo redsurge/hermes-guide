@@ -1,6 +1,6 @@
 [project]
 name = "hermes-guide"
-version = "0.6.1"
+version = "0.7.0"
 description = "Executable, read-only diagnostics for Hermes configuration"
 readme = "README.md"
 license = {text = "MIT"}

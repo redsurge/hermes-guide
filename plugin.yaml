@@ -1,5 +1,5 @@
 name: hermes-guide
-version: 0.6.1
+version: 0.7.0
 description: >-
   Executable, read-only diagnostics for Hermes configuration. Complements the
   built-in doctor/helpers: deterministic health checks across MCP servers,
@@ -8,7 +8,7 @@ description: >-
 manifest_version: 1
 api_version: 1
 license: MIT
-homepage: https://github.com/redsurge/hermes-guide
+homepage: https://github.com/iap/hermes-guide
 tags: [diagnostics, observability, troubleshooting]
 python_dependencies:
   - PyYAML>=6.0,<7

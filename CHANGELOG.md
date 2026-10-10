@@ -2,6 +2,25 @@
 
 All notable changes to hermes-guide are documented here.
 
+## v0.7.0 (2026-10-10)
+
+### Features
+
+- add changelog generator and proactive version check ([#178](https://github.com/iap/hermes-guide/pull/178))
+- **diagnosing-cli-tui**: add ConPTY inline mode, expand upstream issue states ([#176](https://github.com/iap/hermes-guide/pull/176))
+- **skills**: add Report sections to all 17 diagnostic skills (#168) ([#175](https://github.com/iap/hermes-guide/pull/175))
+- **skills**: add standard diagnosis report format (#168) ([#174](https://github.com/iap/hermes-guide/pull/174))
+- **skills**: add diagnosing-triage meta-skill ([#173](https://github.com/iap/hermes-guide/pull/173))
+
+### Bug Fixes
+
+- address CodeRabbit follow-up findings on version check ([#181](https://github.com/iap/hermes-guide/pull/181))
+- **triage**: move host-pressure branch before per-surface branches ([#177](https://github.com/iap/hermes-guide/pull/177))
+
+### Chores
+
+- **release**: bump to 0.7.0 ([#182](https://github.com/iap/hermes-guide/pull/182))
+
 ## v0.6.0 (2026-10-07)
 
 ### Features
